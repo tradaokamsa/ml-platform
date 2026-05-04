@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package training.v1;
+
+option go_package = "github.com/tradaokamsa/ml-platform/go-control-plane/internal/grpc/trainingv1";
+
+import "google/protobuf/timestamp.proto";
+
+service ExperimentManagerService {
+    rpc SubmitExperiment(SubmitExperimentRequest) returns (SubmitExperimentResponse);
+    rpc GetExperimentStatus(GetExperimentStatusRequest) returns (GetExperimentStatusResponse);
+}
+
+message SubmitExperimentRequest {
+    FinetuneConfig config = 1;
+}
+
+message SubmitExperimentResponse {
+    string id = 1;
+    string status = 2;
+    google.protobuf.Timestamp created_at = 3;
+}
+
+message GetExperimentStatusRequest {
+    string id = 1;
+}
+
+message GetExperimentStatusResponse {
+    string id = 1;
+    string name = 2;
+    string status = 3;
+    string base_model = 4;
+    int32 current_step = 5;
+    int32 total_steps = 6;
+    google.protobuf.Timestamp created_at = 7;
+    google.protobuf.Timestamp started_at = 8;
+    google.protobuf.Timestamp completed_at = 9;
+}
+
+message FinetuneConfig {
+    string name = 1;
+    string base_model = 2;
+    LoraConfig lora_config = 3;
+    DatasetRef dataset = 4;
+    TrainingArgs training_args = 5;
+    ResourceRequirements resources = 6;
+}
+
+message LoraConfig {
+    int32 rank = 1;
+    float alpha = 2;
+    repeated string target_modules = 3;
+    float dropout = 4;
+    string task_type = 5;
+}
+
+message DatasetRef {
+    string name = 1;
+    string version = 2;
+    string split = 3;
+    int32 max_samples = 4;
+}
+
+message TrainingArgs {
+    int32 num_train_epochs = 1;
+    int32 per_device_train_batch_size = 2;
+    int32 gradient_accumulation_steps = 3;
+    float learning_rate = 4;
+    string lr_scheduler_type = 5;
+    float warmup_ratio = 6;
+    bool use_fp16 = 7;
+    int32 max_seq_length = 8;
+    int32 logging_steps = 9;
+    int32 save_steps = 10;
+    int32 eval_steps = 11;
+}
+
+message ResourceRequirements {
+    int32 gpu_count = 1;
+    string gpu_type = 2;
+    int32 priority = 3;
+    int32 timeout_sec = 4;
+}

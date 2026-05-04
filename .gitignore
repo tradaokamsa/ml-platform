@@ -216,3 +216,31 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Go
+go-control-plane/experiment-manager
+go-control-plane/registry
+go-control-plane/router
+go-control-plane/mlp
+
+# OS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+
+# Docker
+*.tar
+
+# Kubernetes (local cluster)
+kubeconfig.yaml
+
+# Model artifacts / data (too large for git)
+*.pt
+*.bin
+*.safetensors
+*.gguf
+data/
+checkpoints/
+models/
